@@ -1,0 +1,40 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+import matplotlib.animation as animation
+from matplotlib import rc
+
+fig=plt.figure(figsize=(6, 6))
+ax=fig.add_subplot(1, 1, 1, projection = '3d')
+ax.set_xlim([-2.0, 2.0])
+ax.set_ylim([-2.0, 2.0])
+ax.set_zlim([-2.0, 2.0])
+ax.tick_params(labelbottom = False, labelleft = False, labelright = False, labeltop = False, length = 0)
+#原点を中心とする半径 r = 1の円
+r = 1
+u,v = np.mgrid[0:2 * np.pi:10j, 0:np.pi:10j]
+x_0 = r * np.cos(u) * np.sin(v)
+y_0 = r * np.sin(u) * np.sin(v)
+z_0 = r * np.cos(v)
+ax.plot_wireframe(x_0, y_0, z_0, color = "r", linewidth = 0.5)
+
+#ここから
+r2 = 300
+z = r * np.sin(0)
+k = np.linspace(0, np.pi*2, 100)
+
+ims = []
+x_data = []
+y_data = []
+
+for i in range(len(k)):
+    x = (r*1.5) * (np.cos(np.pi - k[i]))
+    y = (r*1.5) * (np.sin(np.pi - k[i]))
+    im = ax.scatter(x, y, z, c = "b", s = r2)
+    ims.append([im])
+
+plt.close()
+
+ani = animation.ArtistAnimation(fig, ims)
+rc('animation', html='jshtml')
+ani
